@@ -8,5 +8,5 @@
 class Board:
 
     def __init__(self):
+        self.squares = [ ' ' for i in range(9)]
 
-        self.squares = []
