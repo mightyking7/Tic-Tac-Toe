@@ -4,7 +4,7 @@
     Purpose:
         Raised if user selects invalid square
 '''
-class InvalidSquareException(Exception):
+class TakenSquareException(Exception):
 
     def __init__(self, *args, **kwargs):
         super().__init__(self, *args, **kwargs)

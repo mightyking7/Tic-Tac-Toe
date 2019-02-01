@@ -1,6 +1,6 @@
 
 import re
-from exceptions import InvalidSquareException
+from exceptions import TakenSquareException
 
 '''
     Responsible for controlling state of game
@@ -22,15 +22,29 @@ class Game():
     '''
     def startMatch(self):
 
-        self.currentPlayer = self.players[0]
-        square = self.promptPlayerMove(self.currentPlayer.name)
+        while True:
 
-        try:
-            self.board.markBoard(square, self.currentPlayer.letter)
-            self.board.printBoard()
+            # if game has been won
+            self.currentPlayer = self.nextPlayer()
+            square = self.promptPlayerMove(self.currentPlayer.name)
 
-        except(InvalidSquareException) as e:
-            print(e.args[0])
+            try:
+                self.board.markBoard(square, self.currentPlayer.letter)
+                self.board.printBoard()
+
+            except(TakenSquareException) as e:
+                print(e.args[0])
+
+    '''
+        Purpose:
+            
+    '''
+    def nextPlayer(self):
+
+        if self.currentPlayer is self.players[0]:
+            return self.players[1]
+
+        return self.players[0]
 
 
 
@@ -107,7 +121,7 @@ class Board:
 
         # check for valid square index and unmarked square
         if self.squares[int(square) - 1] != ' ':
-            raise InvalidSquareException('Invalid square selected')
+            raise TakenSquareException('Square has been marked')
 
         else:
             self.squares[int(square) - 1] = letter
