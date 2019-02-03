@@ -14,7 +14,6 @@ class Game():
     def __init__(self):
         self.board = Board()
         self.currentPlayer = None
-        self.winner = None
         self.players = []
 
     '''
@@ -22,32 +21,11 @@ class Game():
     '''
     def startMatch(self):
 
-        '''
-            Checks the board for a winning player
-
-            :return True if the game has been won, false otherwise
-        '''
-        def winner():
-            squares = self.board.squares
-
-            # TODO use threads to check columns, rows, and crosses indipendently
-            if (not str.isspace(squares[0]) and squares[0] == squares[1] == squares[2]) or \
-                (not str.isspace(squares[3]) and squares[3] == squares[4] == squares[5]) or \
-                (not str.isspace(squares[6]) and squares[6] == squares[7] == squares[8]) or \
-                (not str.isspace(squares[0]) and squares[0] == squares[3] == squares[6]) or \
-                (not str.isspace(squares[1]) and squares[1] == squares[4] == squares[7]) or \
-                (not str.isspace(squares[2]) and squares[2] == squares[5] == squares[8]) or \
-                (not str.isspace(squares[0]) and squares[0] == squares[4] == squares[8]) or \
-                (not str.isspace(squares[2]) and squares[2] == squares[4] == squares[6]):
-                    return True
-
-            return False
-
         while True:
 
             # TODO handle case when no one wins
             # check if the game has been won
-            if winner():
+            if self.getWinner():
                 print("Congratulations %s, you won !" % self.currentPlayer.name)
                 break
 
@@ -61,7 +39,27 @@ class Game():
             except(TakenSquareException) as e:
                 print(e.args[0])
 
+    '''
+        Checks the board for a winning player
 
+        :return True if the game has been won, false otherwise
+    '''
+
+    def getWinner(self):
+        squares = self.board.squares
+
+        # TODO use threads to check columns, rows, and crosses indipendently
+        if (not str.isspace(squares[0]) and squares[0] == squares[1] == squares[2]) or \
+                (not str.isspace(squares[3]) and squares[3] == squares[4] == squares[5]) or \
+                (not str.isspace(squares[6]) and squares[6] == squares[7] == squares[8]) or \
+                (not str.isspace(squares[0]) and squares[0] == squares[3] == squares[6]) or \
+                (not str.isspace(squares[1]) and squares[1] == squares[4] == squares[7]) or \
+                (not str.isspace(squares[2]) and squares[2] == squares[5] == squares[8]) or \
+                (not str.isspace(squares[0]) and squares[0] == squares[4] == squares[8]) or \
+                (not str.isspace(squares[2]) and squares[2] == squares[4] == squares[6]):
+            return True
+
+        return False
 
     '''
         Purpose:
@@ -76,17 +74,12 @@ class Game():
 
 
     '''
-        Used to add a player to the game
+        Adds a player to the game
         
-        player - Player object to add to the game
+        :arg player object to add to the game
     '''
-    def addPlayer(self, player, *players):
-
+    def addPlayer(self, player):
         self.players.append(player)
-
-        for player in players:
-            if player is Player:
-                self.players.append(player)
 
     '''
         Prompts the player to select a square to make a move  
@@ -158,5 +151,15 @@ class Board:
 
         else:
             self.squares[int(square) - 1] = letter
+
+    '''
+        Purpose:
+            Clears a board by setting each square to it's default value      
+    '''
+    def clearBoard(self):
+        for i, x in enumerate(self.squares):
+            if x != ' ':
+                self.squares[i] = ' '
+
 
 
