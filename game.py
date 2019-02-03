@@ -22,9 +22,35 @@ class Game():
     '''
     def startMatch(self):
 
+        '''
+            Checks the board for a winning player
+
+            :return True if the game has been won, false otherwise
+        '''
+        def winner():
+            squares = self.board.squares
+
+            # TODO use threads to check columns, rows, and crosses indipendently
+            if (not str.isspace(squares[0]) and squares[0] == squares[1] == squares[2]) or \
+                (not str.isspace(squares[3]) and squares[3] == squares[4] == squares[5]) or \
+                (not str.isspace(squares[6]) and squares[6] == squares[7] == squares[8]) or \
+                (not str.isspace(squares[0]) and squares[0] == squares[3] == squares[6]) or \
+                (not str.isspace(squares[1]) and squares[1] == squares[4] == squares[7]) or \
+                (not str.isspace(squares[2]) and squares[2] == squares[5] == squares[8]) or \
+                (not str.isspace(squares[0]) and squares[0] == squares[4] == squares[8]) or \
+                (not str.isspace(squares[2]) and squares[2] == squares[4] == squares[6]):
+                    return True
+
+            return False
+
         while True:
 
-            # if game has been won
+            # TODO handle case when no one wins
+            # check if the game has been won
+            if winner():
+                print("Congratulations %s, you won !" % self.currentPlayer.name)
+                break
+
             self.currentPlayer = self.nextPlayer()
             square = self.promptPlayerMove(self.currentPlayer.name)
 
@@ -34,6 +60,8 @@ class Game():
 
             except(TakenSquareException) as e:
                 print(e.args[0])
+
+
 
     '''
         Purpose:
@@ -47,15 +75,18 @@ class Game():
         return self.players[0]
 
 
-
     '''
         Used to add a player to the game
         
         player - Player object to add to the game
     '''
-    def addPlayer(self, player):
+    def addPlayer(self, player, *players):
 
         self.players.append(player)
+
+        for player in players:
+            if player is Player:
+                self.players.append(player)
 
     '''
         Prompts the player to select a square to make a move  
@@ -88,6 +119,8 @@ class Player:
         states of individual squares in the board
 '''
 class Board:
+
+    ROW_COL_SIZE = 3
 
     def __init__(self):
         self.squares = [' ' for i in range(9)]
