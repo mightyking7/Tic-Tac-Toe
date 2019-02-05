@@ -1,5 +1,7 @@
 
 import re
+from sys import maxsize
+
 
 '''
     Responsible for controlling state of game
@@ -41,7 +43,7 @@ class Game():
             self.board.printBoard()
 
             # check if the game has been won
-            if currentPlayer.moves >= 3 and self.isWinner(currentPlayer.letter):
+            if currentPlayer.moves >= 3 and Game.isWinner(self.board, currentPlayer.letter):
                 print("Congratulations %s, you won !" % currentPlayer.name)
                 break
 
@@ -64,10 +66,10 @@ class Game():
             True if a row, column, or cross contain l
             False otherwise
     '''
+    @classmethod
+    def isWinner(cls, board, l):
 
-    def isWinner(self, l):
-
-        squares = self.board.squares
+        squares = board.squares
 
         if squares[0] == squares[1] == squares[2]  == l or \
             squares[3] == squares[4] == squares[5] == l or \
@@ -197,6 +199,15 @@ class Board:
         for i, x in enumerate(self.squares):
             if x != ' ':
                 self.squares[i] = ' '
+
+
+
+
+
+
+
+
+
 
 
 

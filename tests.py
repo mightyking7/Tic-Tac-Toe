@@ -45,7 +45,7 @@ class TestGame(unittest.TestCase):
             board.markBoard(row[0], player.letter)
             board.markBoard(row[1], player.letter)
             board.markBoard(row[2], player.letter)
-            win = self.game.isWinner()
+            win = Game.isWinner(self.game.board, player.letter)
 
             self.assertTrue(win)
             board.clearBoard()
@@ -65,7 +65,7 @@ class TestGame(unittest.TestCase):
             board.markBoard(col[0], player.letter)
             board.markBoard(col[1], player.letter)
             board.markBoard(col[2], player.letter)
-            win = self.game.isWinner()
+            win = Game.isWinner(self.game.board, player.letter)
 
             self.assertTrue(win)
             board.clearBoard()
@@ -85,7 +85,7 @@ class TestGame(unittest.TestCase):
             board.markBoard(cross[0], player.letter)
             board.markBoard(cross[1], player.letter)
             board.markBoard(cross[2], player.letter)
-            win = self.game.isWinner()
+            win = Game.isWinner(self.game.board, player.letter)
 
             self.assertTrue(win)
             board.clearBoard()
