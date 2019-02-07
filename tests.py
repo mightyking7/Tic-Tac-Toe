@@ -1,7 +1,12 @@
 import unittest
 from game import *
+from player import *
 
 
+'''
+    Purpose:
+        Tests for verifying that the game of Tic Tac Toe works
+'''
 class TestGame(unittest.TestCase):
 
     @classmethod

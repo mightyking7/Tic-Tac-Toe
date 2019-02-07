@@ -1,7 +1,7 @@
 
 import re
-from sys import maxsize
-
+from agent import Agent
+from board import Board
 
 '''
     Responsible for controlling state of game
@@ -23,7 +23,7 @@ class Game():
             
         Notes:
             Starts an infinite loop that runs until a 
-            player has won or a tie has occured
+            player has won or a tie has occurred
     '''
     def startMatch(self):
 
@@ -33,8 +33,14 @@ class Game():
             self.currentPlayer = self.nextPlayer()
             currentPlayer = self.currentPlayer
 
-            # prompt the player to make a move
-            square = self.promptPlayerMove()
+            # player move, prompt for a square
+            if not (type(currentPlayer) is Agent):
+                square = self.promptPlayerMove()
+
+            # computer move
+            else:
+                print("%s is making a move..." %(currentPlayer.name))
+                square = currentPlayer.getNextMove()
 
             # mark the square with the letter
             self.board.markBoard(square, currentPlayer.letter)
@@ -137,68 +143,9 @@ class Game():
         return int(square)
 
 
-class Player:
-
-    '''
-        Player has a name and an assigned piece to make moves
-    '''
-    def __init__(self, name, letter):
-        self.name = name
-        self.letter = letter
-        self.moves = 0
 
 
-'''
-    Author:
-        Isaac Buitrago
-        
-    Purpose:
-        Responsible for maintaining the
-        states of individual squares in the board
-'''
-class Board:
 
-    ROW_COL_SIZE = 3
-
-    def __init__(self):
-        self.squares = [' '] * 9
-
-    '''
-        Responsible for printing the contents of the board
-    '''
-    def printBoard(self):
-
-        # index for slicing
-        i = 0
-        j = 3
-
-        while j <= len(self.squares):
-            row = self.squares[i:j]
-            print('|%c|%c|%c|' %(row[0], row[1], row[2]))
-            i = j
-            j += 3
-
-    '''
-        Purpose:
-            Used to mark a square with the given letter
-
-        Parameters:
-            square - square number on board
-            
-        Notes:
-            Assume that square is a number 1-9
-    '''
-    def markBoard(self, square, letter):
-            self.squares[square - 1] = letter
-
-    '''
-        Purpose:
-            Clears a board by setting each square to it's default value      
-    '''
-    def clearBoard(self):
-        for i, x in enumerate(self.squares):
-            if x != ' ':
-                self.squares[i] = ' '
 
 
 

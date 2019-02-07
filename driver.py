@@ -1,5 +1,9 @@
 import re
-from game import *
+from game import Game
+from agent import Agent
+from player import Player
+
+
 '''
     Used to get the name of the user.
     Name is validated to ensure that only
@@ -43,16 +47,25 @@ def main():
     name1 = getName("Player 1, what is your name ?")
     letter1 = getLetter()
 
-    name2 = getName("Player 2, what is your name ?")
+    # name2 = getName("Player 2, what is your name ?")
     letter2 = 'O' if letter1 == 'X' else 'X'
-    print("%s you are letter %c" %(name2, letter2))
+    # print("%s you are letter %c" %(name2, letter2))
 
     # create a new game and print the board
     game = Game()
+
     game.board.printBoard()
-    game.addPlayer( Player(name1, letter1) )
-    game.addPlayer( Player(name2, letter2) )
+
+    # create the players and add them to the game
+    player = Player(name1, letter1)
+
+    game.addPlayer(player)
+
+    agent = Agent("Computer", letter2, game.board, player)
+
+    game.addPlayer(agent)
 
     # start a new match
     game.startMatch()
+
 main()

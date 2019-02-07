@@ -1,76 +1,92 @@
-from game import Player
+from player import Player
+from sys import maxsize
 
 '''
     Purpose:
-        Agent that plays against the user.
+        Autonomous agent that plays against a human player.
 
     Notes:
-        Utilizes the minimax search algorithm with 
-        an alpha-beta pruning tree to find the optimal move on the board.
+        Utilizes the minimax search algorithm with
+        an alpha-beta pruning tree to find a move
+        that minimizes the maximum possible loss.
 '''
-
-
 class Agent(Player):
-    '''
-        Purpose: Constructor
-
-        Parameters:
-            board - board to make a move on
-            opponent -  player to minimize performance
-    '''
-
-    def __init__(self, board, opponent):
-        super().__init__()
-        self.board = board
-        self.opponent = opponent
 
     '''
         Purpose:
-            Calculates the optimal index that the agent should select
+            Constructor
+
+        Parameters:
+            board - board to make a move on
+            opponent - player to minimize performance
     '''
 
-    def minimax(self, depth, player, alpha, beta):
+    def __init__(self, name, letter, board, opponent):
+        super().__init__(name, letter)
+        self.board = board  # board to analyze
+        self.opponent = opponent  # opponent in game
 
-        moves = self.getMoves(self.board)
+    def getNextMove(self):
 
-        # agent letter is maximizing, player's letter is minimizing
+        # get index with max score
+        score = self.minimax(2, self)
+
+        return score[0]
+
+
+    '''
+        Purpose:
+            Calculates the optimal index the agent should select
+
+        Returns
+    '''
+    def minimax(self, depth, player):
+
+        # default move for player
         move = -1
 
-        # game over or depth reached, evaluate score
-        if len(moves) == 0 or depth == 0:
-            score = self.evaluate()
+        if player is Agent:
+            best = [move, -maxsize]
 
-            return [score, move]
+        else:
+            best = [move, maxsize]
+
+        # get legal moves for player
+        moves = self.getMoves(self.board)
+
+        # base case
+        # depth reached or game is over, evaluate score
+        if depth == 0 or len(moves) == 0:
+            score = self.evaluate()
+            return [move, score]
 
         else:
 
             for move in moves:
 
-                # try move for agent
-                self.board.squares[move] = self.letter
+                # try move for player
+                self.board.squares[move] = player.letter
 
                 # computer is maximizing player
                 if player is Agent:
-                    score = self.minimax(depth - 1, self.opponent, alpha, beta)[0]
 
-                    if score > alpha:
-                        alpha = score
+                    score = self.minimax(depth - 1, self.opponent)
 
+                    if score[1] > best[1]:
+                        best = score
 
                 # opponent is minimizing player
                 else:
-                    score = self.minimax(depth - 1, self, alpha, beta)[0]
+                    score = self.minimax(depth - 1, self)
 
-                    if score < beta:
-                        beta = score
+                    if score[1] < best[1]:
+                        best = score
 
                 # undo move
                 self.board.squares[move] = ' '
 
-                if alpha >= beta:
-                    break
+        return best
 
-        return [alpha if player is Agent else beta, move]
 
     '''
      Purpose:
@@ -83,7 +99,7 @@ class Agent(Player):
         moves = []
 
         # game over, no next move
-        if Game.isWinner(board, 'X') or Game.isWinner(board, 'O'):
+        if g.isWinner(board, 'X') or g.isWinner(board, 'O'):
             return moves
 
         # get index of available squares
@@ -129,7 +145,7 @@ class Agent(Player):
 
         Parameters:
             cell1 - index of square on the board
-            cell2 - index of square on the board 
+            cell2 - index of square on the board
             cell3 - index of square on the board
 
         Return:
@@ -139,4 +155,75 @@ class Agent(Player):
     '''
 
     def evaluateLine(self, cell1, cell2, cell3):
-        pass
+
+        squares = self.board.squares
+
+        score = 0
+
+        # first cell
+        if squares[cell1] == self.letter:
+            score = 1
+
+        elif squares[cell1] == self.opponent.letter:
+            score = -1
+
+        # second cell
+        if squares[cell2] == self.letter:
+
+            # cell1 has letter of agent
+            if score == 1:
+                score = 10
+
+            # cell1 has letter of opponent
+            elif score == -1:
+                return 0
+
+            # cell1 is empty
+            else:
+                score = 1
+
+        elif squares[cell2] == self.opponent.letter:
+            # cell1 has letter of opponent
+            if score == -1:
+                score = -10
+
+            # cell1 has letter of agent
+            elif score == 1:
+                return 0
+
+            # cell1 is empty
+            else:
+                score = -1
+
+        # third cell
+        if squares[cell3] == self.letter:
+
+            # cell has letter of agent
+            if score > 0:
+                score *= 10
+
+            # cell1 and or cell2 has letter of opponent
+            elif score < 0:
+                return 0
+
+            # cell1 and cell2 are empty
+            else:
+                score = 1
+
+        elif squares[cell3] == self.opponent.letter:
+
+            # cell1 and or cell2 has letter of opponent
+            if score < 0:
+                score *= 10
+
+            # cell1 and or cell2 has letter of agent
+            elif score > 0:
+                return 0
+            # cell1 and or cell2 are empty
+            else:
+                score = -1
+
+        return score
+
+
+from game import Game
