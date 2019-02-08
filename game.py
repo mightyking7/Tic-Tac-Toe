@@ -1,6 +1,5 @@
 
 import re
-from agent import Agent
 from board import Board
 
 '''
@@ -39,18 +38,19 @@ class Game():
             square = self.promptPlayerMove()
 
             # mark the square and increment the number of moves for the player
-            self.board.markBoard(square, currentPlayer.letter)
-            currentPlayer.moves += 1
+            self.board.markBoard(square, currentPlayer.getLetter())
+
+            currentPlayer.setMoves(currentPlayer.getMoves() + 1)
 
             self.board.printBoard()
 
             # check if the game has been won
-            if currentPlayer.moves >= 3 and Game.isWinner(self.board, currentPlayer.letter):
-                print("Congratulations %s, you won !" % currentPlayer.name)
+            if currentPlayer.getMoves() >= 3 and Game.isWinner(self.board, currentPlayer.getLetter()):
+                print("Congratulations %s, you won !" % currentPlayer.getName())
                 break
 
             # tie if X and O are only elements in the board
-            elif currentPlayer.moves >= 3 and len(set(self.board.squares)) == 2:
+            elif currentPlayer.getMoves() >= 3 and len(set(self.board.getSquares())) == 2:
                 print("Tie!")
                 break
 
@@ -59,7 +59,8 @@ class Game():
             Checks if board has been conquered by a player's letter
         
         Parameters:
-            l -  letter to check for a winner
+            board - board to check
+            l -  letter to check if won
             
         Notes:
             Checks if any row, column, or cross on the board contain the given letter 
@@ -71,7 +72,7 @@ class Game():
     @classmethod
     def isWinner(cls, board, l):
 
-        squares = board.squares
+        squares = board.getSquares()
 
         if squares[0] == squares[1] == squares[2]  == l or \
             squares[3] == squares[4] == squares[5] == l or \
@@ -116,6 +117,9 @@ class Game():
     def getCurrentPlayer(self):
         return self.currentPlayer
 
+    def getPlayers(self):
+        return self.players
+
 
     '''
         Purpose:
@@ -136,7 +140,7 @@ class Game():
     '''
     def promptPlayerMove(self):
 
-        squares = self.board.squares
+        squares = self.board.getSquares()
         square = ' '
 
         message = f"{self.currentPlayer.name}, place {self.currentPlayer.letter} on a square (1 - 9) that is not occupied: "

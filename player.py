@@ -1,10 +1,12 @@
 
 '''
+
+  Author:
+        Isaac Buitrago
+
     Purpose:
         Player for a game of Tic Tac Toe
 
-    Author:
-        Isaac Buitrago
 '''
 class Player:
 
@@ -17,7 +19,7 @@ class Player:
         self.moves = 0
 
     '''
-        Getter for Player attributes
+        Getters and Setters for Player attributes
     '''
     def getLetter(self):
 
@@ -30,3 +32,7 @@ class Player:
     def getMoves(self):
 
         return self.moves
+
+    def setMoves(self, num):
+
+        self.moves = num

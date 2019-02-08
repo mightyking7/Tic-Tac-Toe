@@ -27,7 +27,10 @@ class Board:
             Returns the letter at the given index
         
         Parameters:
-            index - index into squares that is not zero off-setted
+            index - integer index with non-zero off set
+            
+        Returns:
+            Value of square at index, None if index is invalid
     '''
     def getSquare(self, index):
 
@@ -68,7 +71,6 @@ class Board:
             True if the board was successfully marked
             False otherwise
     '''
-
     def markBoard(self, square, letter):
 
         if self.squares[square - 1].isspace():
@@ -83,7 +85,6 @@ class Board:
         Purpose:
             Clears a board by setting each square to it's default value      
     '''
-
     def clearBoard(self):
         for i, x in enumerate(self.squares):
             if x != ' ':

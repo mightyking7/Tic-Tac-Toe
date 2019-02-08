@@ -80,9 +80,8 @@ class TestGame(unittest.TestCase):
         self.game.addPlayer(player1)
         self.game.addPlayer(player2)
 
-        player1 = self.game.players[0] # x
-        player2 = self.game.players[1] # o
-
+        p1 = player1.getLetter() # x
+        p2 = player2.getLetter() # o
 
         '''
             State of board when a draw occurs
@@ -91,19 +90,19 @@ class TestGame(unittest.TestCase):
             |o|o|x|
             |x|o|x|
         '''
-        board.markBoard(1, player1.letter)
-        board.markBoard(2, player1.letter)
-        board.markBoard(3, player2.letter)
-        board.markBoard(4, player2.letter)
-        board.markBoard(5, player2.letter)
-        board.markBoard(6, player1.letter)
-        board.markBoard(7, player1.letter)
-        board.markBoard(8, player2.letter)
-        board.markBoard(9, player1.letter)
+        board.markBoard(1, p1)
+        board.markBoard(2, p1)
+        board.markBoard(3, p2)
+        board.markBoard(4, p2)
+        board.markBoard(5, p2)
+        board.markBoard(6, p1)
+        board.markBoard(7, p1)
+        board.markBoard(8, p2)
+        board.markBoard(9, p1)
 
         # neither player1 or player2 won, draw
-        p1Won = Game.isWinner(board, player1.letter)
-        p2Won = Game.isWinner(board, player1.letter)
+        p1Won = Game.isWinner(board, p1)
+        p2Won = Game.isWinner(board, p2)
 
         self.assertFalse(p1Won)
         self.assertFalse(p2Won)
@@ -125,8 +124,8 @@ class TestGame(unittest.TestCase):
         self.game.addPlayer(player1)
         self.game.addPlayer(player2)
 
-        validMove   = board.markBoard(1, player1.letter)
-        invalidMove = board.markBoard(1, player2.letter)
+        validMove   = board.markBoard(1, player1.getLetter())
+        invalidMove = board.markBoard(1, player2.getLetter())
 
         self.assertTrue(validMove)
         self.assertFalse(invalidMove)
@@ -148,12 +147,13 @@ class TestGame(unittest.TestCase):
     def canConquerRow(self, player):
 
         board = self.game.getBoard()
+        letter = player.getLetter()
 
         for row in self.rows:
-            board.markBoard(row[0], player.letter)
-            board.markBoard(row[1], player.letter)
-            board.markBoard(row[2], player.letter)
-            win = Game.isWinner(self.game.board, player.letter)
+            board.markBoard(row[0], letter)
+            board.markBoard(row[1], letter)
+            board.markBoard(row[2], letter)
+            win = Game.isWinner(board, letter)
 
             self.assertTrue(win)
             board.clearBoard()
@@ -171,12 +171,13 @@ class TestGame(unittest.TestCase):
     def canConquerColumn(self, player):
 
         board = self.game.getBoard()
+        letter = player.getLetter()
 
         for col in self.cols:
-            board.markBoard(col[0], player.letter)
-            board.markBoard(col[1], player.letter)
-            board.markBoard(col[2], player.letter)
-            win = Game.isWinner(self.game.board, player.letter)
+            board.markBoard(col[0], letter)
+            board.markBoard(col[1], letter)
+            board.markBoard(col[2], letter)
+            win = Game.isWinner(board, letter)
 
             self.assertTrue(win)
             board.clearBoard()
@@ -194,12 +195,13 @@ class TestGame(unittest.TestCase):
     def canConquerCross(self, player):
 
         board = self.game.getBoard()
+        letter = player.getLetter()
 
         for cross in self.crosses:
-            board.markBoard(cross[0], player.letter)
-            board.markBoard(cross[1], player.letter)
-            board.markBoard(cross[2], player.letter)
-            win = Game.isWinner(self.game.board, player.letter)
+            board.markBoard(cross[0], letter)
+            board.markBoard(cross[1], letter)
+            board.markBoard(cross[2], letter)
+            win = Game.isWinner(board, letter)
 
             self.assertTrue(win)
             board.clearBoard()

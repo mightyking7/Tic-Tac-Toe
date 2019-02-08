@@ -1,12 +1,13 @@
 import re
 from game import Game
-from agent import Agent
 from player import Player
 
 
 '''
-    Purpose:
-        Game of tic tac toe
+      Author:
+        Isaac Buitrago
+        
+    Driver to start a game of Tic Tac Toe
 '''
 
 '''

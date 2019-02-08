@@ -24,10 +24,12 @@ class Agent(Player):
             board - board to make a move on
             opponent - player to minimize performance
     '''
-
     def __init__(self, name, letter, board, opponent):
+
         super().__init__(name, letter)
-        self.board = board  # board to analyze
+
+        self.board = board        # board to analyze
+
         self.opponent = opponent  # opponent in game
 
     '''
@@ -77,7 +79,7 @@ class Agent(Player):
             for move in moves:
 
                 # try move for player
-                self.board.squares[move] = player.letter
+                self.board.getSquares()[move] = player.letter
 
                 # computer is maximizing player
                 if type(player) is Agent:
@@ -97,7 +99,7 @@ class Agent(Player):
                         best[0] = move
 
                 # undo move
-                self.board.squares[move] = ' '
+                self.board.getSquares()[move] = ' '
 
         return best
 
@@ -121,7 +123,7 @@ class Agent(Player):
             return moves
 
         # get index of available squares
-        for i, val in enumerate(board.squares):
+        for i, val in enumerate(board.getSquares()):
             if val == ' ':
                 moves.append(i)
 
@@ -174,7 +176,9 @@ class Agent(Player):
 
     def evaluateLine(self, cell1, cell2, cell3):
 
-        squares = self.board.squares
+        squares = self.board.getSquares()
+
+        opLetter = self.opponent.getLetter()
 
         score = 0
 
@@ -182,7 +186,7 @@ class Agent(Player):
         if squares[cell1] == self.letter:
             score = 1
 
-        elif squares[cell1] == self.opponent.letter:
+        elif squares[cell1] == opLetter:
             score = -1
 
         # second cell
@@ -200,7 +204,7 @@ class Agent(Player):
             else:
                 score = 1
 
-        elif squares[cell2] == self.opponent.letter:
+        elif squares[cell2] == opLetter:
             # cell1 has letter of opponent
             if score == -1:
                 score = -10
@@ -228,7 +232,7 @@ class Agent(Player):
             else:
                 score = 1
 
-        elif squares[cell3] == self.opponent.letter:
+        elif squares[cell3] == opLetter:
 
             # cell1 and or cell2 has letter of opponent
             if score < 0:
