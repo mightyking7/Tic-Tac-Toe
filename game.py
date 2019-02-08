@@ -107,6 +107,15 @@ class Game():
     def addPlayer(self, player):
         self.players.append(player)
 
+    '''
+        Getters for Game attributes
+    '''
+    def getBoard(self):
+        return self.board
+
+    def getCurrentPlayer(self):
+        return self.currentPlayer
+
 
     '''
         Purpose:

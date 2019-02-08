@@ -22,6 +22,28 @@ class TestGame(unittest.TestCase):
 
     '''
         Purpose:
+            Used to validate if a player can mark a square with their letter
+    '''
+    def test_markBoard(self):
+
+        player1 = Player('X', 'X')
+
+        self.game.addPlayer(player1)
+
+        board = self.game.getBoard()
+
+        board.markBoard(1, player1)
+
+        squareMark = board.getSquare(1)
+
+        playerLetter = player1.getLetter()
+
+        self.assertEqual(squareMark.name, playerLetter)
+
+        board.clearBoard()
+
+    '''
+        Purpose:
             Used to validate if a player can dominate three adjacent cells
     '''
     def test_GameWon(self):
@@ -50,7 +72,7 @@ class TestGame(unittest.TestCase):
     '''
     def test_GameTie(self):
 
-        board = self.game.board
+        board = self.game.getBoard()
 
         player1 = Player('X', 'X')
         player2 = Player('O', 'O')
@@ -95,7 +117,7 @@ class TestGame(unittest.TestCase):
     '''
     def test_MakeLegalMoves(self):
 
-        board = self.game.board
+        board = self.game.getBoard()
 
         player1 = Player('X', 'X')
         player2 = Player('O', 'O')
@@ -125,7 +147,7 @@ class TestGame(unittest.TestCase):
     '''
     def canConquerRow(self, player):
 
-        board = self.game.board
+        board = self.game.getBoard()
 
         for row in self.rows:
             board.markBoard(row[0], player.letter)
@@ -148,7 +170,7 @@ class TestGame(unittest.TestCase):
     '''
     def canConquerColumn(self, player):
 
-        board = self.game.board
+        board = self.game.getBoard()
 
         for col in self.cols:
             board.markBoard(col[0], player.letter)
@@ -171,7 +193,7 @@ class TestGame(unittest.TestCase):
     '''
     def canConquerCross(self, player):
 
-        board = self.game.board
+        board = self.game.getBoard()
 
         for cross in self.crosses:
             board.markBoard(cross[0], player.letter)

@@ -30,6 +30,13 @@ class Agent(Player):
         self.board = board  # board to analyze
         self.opponent = opponent  # opponent in game
 
+    '''
+        Purpose:
+            Gets the best board index for the agent to select.
+
+        Returns:
+            Optimal index on the board
+    '''
     def getNextMove(self):
 
         # get index with max score
@@ -96,9 +103,13 @@ class Agent(Player):
 
 
     '''
-     Purpose:
-        Returns all valid moves the agent can select
-        or an empty list if no legal moves are possible
+        Purpose:
+            Returns all valid moves the agent can select
+            or an empty list if no legal moves are possible
+        
+        Returns:
+            List of legal indices that the agent 
+            can move into given the current state of the board.
     '''
 
     def getMoves(self, board):
@@ -120,7 +131,7 @@ class Agent(Player):
         Purpose:
             Heuristic evaluation function for the board
 
-        Return:
+        Returns:
             100, 10, 1 for each 3 - 2 - 1 in a line for computer
             -100, -10, -1 for each 3 - 2 - 1 in a line for opponent
              0 otherwise
@@ -155,7 +166,7 @@ class Agent(Player):
             cell2 - index of square on the board
             cell3 - index of square on the board
 
-        Return:
+        Returns:
             100, 10, 1 for each 3 - 2 - 1 in a line for computer
             -100, -10, -1 for each 3 - 2 - 1 in a line for opponent
              0 otherwise

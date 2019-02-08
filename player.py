@@ -15,3 +15,18 @@ class Player:
         self.name = name
         self.letter = letter
         self.moves = 0
+
+    '''
+        Getter for Player attributes
+    '''
+    def getLetter(self):
+
+        return self.letter
+
+    def getName(self):
+
+        return self.name
+
+    def getMoves(self):
+
+        return self.moves

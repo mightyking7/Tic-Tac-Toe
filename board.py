@@ -14,8 +14,31 @@ class Board:
     def __init__(self):
         self.squares = [' '] * 9
 
+
     '''
-        Responsible for printing the contents of the board
+        Purpose:
+            Gets the squares for the board
+    '''
+    def getSquares(self):
+        return self.squares
+
+    '''
+        Purpose:
+            Returns the letter at the given index
+        
+        Parameters:
+            index - index into squares that is not zero off-setted
+    '''
+    def getSquare(self, index):
+
+        if index in range(len(self.squares)):
+            return self.squares[index - 1]
+
+        return None
+
+    '''
+        Purpose:
+            Responsible for printing the contents of the board
     '''
     def printBoard(self):
 
