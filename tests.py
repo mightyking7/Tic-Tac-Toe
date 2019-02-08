@@ -4,6 +4,9 @@ from player import *
 
 
 '''
+    Author:
+        Isaac Buitrago
+        
     Purpose:
         Tests for verifying that the game of Tic Tac Toe works
 '''
@@ -17,7 +20,8 @@ class TestGame(unittest.TestCase):
         cls.crosses = [(1, 5, 9), (3, 5, 7)]
 
     '''
-        Tests if marking any three squares with the same letter results in a winner
+        Tests if marking any three squares with the 
+        same letter results in a winner.
     '''
     def test_GameWon(self):
 
@@ -27,10 +31,12 @@ class TestGame(unittest.TestCase):
         self.game.addPlayer(player1)
         self.game.addPlayer(player2)
 
+        # test if player1 can win the game
         self.canConquerRow(player1)
         self.canConquerColumn(player1)
         self.canConquerCross(player1)
 
+        # test if player2 can win the game
         self.canConquerRow(player2)
         self.canConquerColumn(player2)
         self.canConquerCross(player2)
@@ -97,3 +103,4 @@ class TestGame(unittest.TestCase):
 
     if __name__ == '__main__':
         unittest.main()
+

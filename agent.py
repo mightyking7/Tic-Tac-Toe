@@ -1,14 +1,18 @@
 from player import Player
 from sys import maxsize
+import game as g
 
 '''
+    Author:
+        Isaac Buitrago
+        
     Purpose:
         Autonomous agent that plays against a human player.
 
     Notes:
-        Utilizes the minimax search algorithm with
-        an alpha-beta pruning tree to find a move
-        that minimizes the maximum possible loss.
+        Utilizes the minimax search algorithm 
+        to find a move that minimizes the 
+        maximum possible loss in a game tree.
 '''
 class Agent(Player):
 
@@ -37,15 +41,16 @@ class Agent(Player):
     '''
         Purpose:
             Calculates the optimal index the agent should select
-
-        Returns
+            
+        Returns:
+            Optimal index on the board
     '''
     def minimax(self, depth, player):
 
         # default move for player
         move = -1
 
-        if player is Agent:
+        if type(player) is Agent:
             best = [move, -maxsize]
 
         else:
@@ -68,12 +73,13 @@ class Agent(Player):
                 self.board.squares[move] = player.letter
 
                 # computer is maximizing player
-                if player is Agent:
+                if type(player) is Agent:
 
                     score = self.minimax(depth - 1, self.opponent)
 
                     if score[1] > best[1]:
                         best = score
+                        best[0] = move
 
                 # opponent is minimizing player
                 else:
@@ -81,6 +87,7 @@ class Agent(Player):
 
                     if score[1] < best[1]:
                         best = score
+                        best[0] = move
 
                 # undo move
                 self.board.squares[move] = ' '
@@ -99,7 +106,7 @@ class Agent(Player):
         moves = []
 
         # game over, no next move
-        if g.isWinner(board, 'X') or g.isWinner(board, 'O'):
+        if g.Game.isWinner(board, 'X') or g.Game.isWinner(board, 'O'):
             return moves
 
         # get index of available squares
@@ -226,4 +233,3 @@ class Agent(Player):
         return score
 
 
-from game import Game

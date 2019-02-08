@@ -4,10 +4,12 @@ from agent import Agent
 from board import Board
 
 '''
-    Responsible for controlling state of game
-    and determining the winner of a match
+    Author: 
+        Isaac Buitrago 
 
-    Isaac Buitrago 
+    Purpose:   
+        Responsible for controlling state of game
+        and determining the winner of a match
 '''
 class Game():
 
@@ -33,16 +35,10 @@ class Game():
             self.currentPlayer = self.nextPlayer()
             currentPlayer = self.currentPlayer
 
-            # player move, prompt for a square
-            if not (type(currentPlayer) is Agent):
-                square = self.promptPlayerMove()
+            # prompt the player for their letter
+            square = self.promptPlayerMove()
 
-            # computer move
-            else:
-                print("%s is making a move..." %(currentPlayer.name))
-                square = currentPlayer.getNextMove()
-
-            # mark the square with the letter
+            # mark the square and increment the number of moves for the player
             self.board.markBoard(square, currentPlayer.letter)
             currentPlayer.moves += 1
 
@@ -84,7 +80,7 @@ class Game():
             squares[1] == squares[4] == squares[7] == l or \
             squares[2] == squares[5] == squares[8] == l or \
             squares[0] == squares[4] == squares[8] == l or \
-            squares[2] == squares[4] == squares[6]:
+            squares[2] == squares[4] == squares[6] == l:
                 return True
 
         return False
@@ -128,17 +124,17 @@ class Game():
             
         Return: 
             Number of Square  
-            
     '''
     def promptPlayerMove(self):
 
+        squares = self.board.squares
         square = ' '
-        while not square.isnumeric() or \
-              re.search('^[1-9]$', square) == None or \
-              self.board.squares[int(square) - 1] != ' ':
 
-            square = input("%s, place %c on a square (1 - 9)"\
-                        %(self.currentPlayer.name, self.currentPlayer.letter)).strip()
+        message = f"{self.currentPlayer.name}, place {self.currentPlayer.letter} on a square (1 - 9) that is not occupied: "
+
+        # while input is not valid
+        while not square.isnumeric() or re.search('^[1-9]$', square) == None or squares[int(square) - 1] != ' ':
+            square = input(message).strip()
 
         return int(square)
 
