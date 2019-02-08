@@ -37,11 +37,24 @@ class Board:
             square - square number on board
 
         Notes:
-            Assume that square is a number 1-9
+            Assume that square is a number 1-9.
+            Validation is done to assure that the
+            square is not populated with a letter.
+            
+        Returns:
+            True if the board was successfully marked
+            False otherwise
     '''
 
     def markBoard(self, square, letter):
-        self.squares[square - 1] = letter
+
+        if self.squares[square - 1].isspace():
+            self.squares[square - 1] = letter
+
+            return True
+
+        return False
+
 
     '''
         Purpose:

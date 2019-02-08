@@ -8,9 +8,10 @@ from player import *
         Isaac Buitrago
         
     Purpose:
-        Tests for verifying that the game of Tic Tac Toe works
+        Tests for validating if the Tic Tac Toe game works
 '''
 class TestGame(unittest.TestCase):
+
 
     @classmethod
     def setUpClass(cls):
@@ -20,8 +21,8 @@ class TestGame(unittest.TestCase):
         cls.crosses = [(1, 5, 9), (3, 5, 7)]
 
     '''
-        Tests if marking any three squares with the 
-        same letter results in a winner.
+        Purpose:
+            Used to validate if a player can dominate three adjacent cells
     '''
     def test_GameWon(self):
 
@@ -41,9 +42,83 @@ class TestGame(unittest.TestCase):
         self.canConquerColumn(player2)
         self.canConquerCross(player2)
 
+
+    '''
+        Purpose:
+            Used to test if a game can result in a draw
+            such that player1 and player2 block each other
+    '''
+    def test_GameTie(self):
+
+        board = self.game.board
+
+        player1 = Player('X', 'X')
+        player2 = Player('O', 'O')
+
+        self.game.addPlayer(player1)
+        self.game.addPlayer(player2)
+
+        player1 = self.game.players[0] # x
+        player2 = self.game.players[1] # o
+
+
+        '''
+            State of board when a draw occurs
+        
+            |x|x|o|
+            |o|o|x|
+            |x|o|x|
+        '''
+        board.markBoard(1, player1.letter)
+        board.markBoard(2, player1.letter)
+        board.markBoard(3, player2.letter)
+        board.markBoard(4, player2.letter)
+        board.markBoard(5, player2.letter)
+        board.markBoard(6, player1.letter)
+        board.markBoard(7, player1.letter)
+        board.markBoard(8, player2.letter)
+        board.markBoard(9, player1.letter)
+
+        # neither player1 or player2 won, draw
+        p1Won = Game.isWinner(board, player1.letter)
+        p2Won = Game.isWinner(board, player1.letter)
+
+        self.assertFalse(p1Won)
+        self.assertFalse(p2Won)
+
+        board.clearBoard()
+
+    '''
+        Purpose:
+            Used to validate if the board allows 
+            a player to overwrite an opponents square.
+    '''
+    def test_MakeLegalMoves(self):
+
+        board = self.game.board
+
+        player1 = Player('X', 'X')
+        player2 = Player('O', 'O')
+
+        self.game.addPlayer(player1)
+        self.game.addPlayer(player2)
+
+        validMove   = board.markBoard(1, player1.letter)
+        invalidMove = board.markBoard(1, player2.letter)
+
+        self.assertTrue(validMove)
+        self.assertFalse(invalidMove)
+
+        board.clearBoard()
+
+
+
     '''
         Purpose:
             Asserts that the player can mark any row with their letter
+        
+        Notes:
+            Clears the board at the end of each iteration
             
         Parameters:
             player - player to test 
@@ -65,6 +140,9 @@ class TestGame(unittest.TestCase):
         Purpose:
             Asserts that the player can mark any column with their letter
             
+        Notes:
+            Clears the board at the end of each iteration
+            
         Parameters:
             player - player to test
     '''
@@ -84,6 +162,9 @@ class TestGame(unittest.TestCase):
     '''
         Purpose:
             Asserts that the player can mark any cross with their letter
+        
+        Notes:
+            Clears the board at the end of each iteration
             
         Parameters:
             player - player to test
